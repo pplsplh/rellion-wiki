@@ -13,6 +13,7 @@ export const BASE_OWNED = new Set(
 export function useOwnedHeroes() {
   const [extraOwned,  setExtraOwned]  = useState<Set<string>>(new Set());
   const [removedBase, setRemovedBase] = useState<Set<string>>(new Set());
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     try {
@@ -22,6 +23,7 @@ export function useOwnedHeroes() {
       const removed = localStorage.getItem(STORAGE_REMOVED_KEY);
       if (removed) setRemovedBase(new Set(JSON.parse(removed) as string[]));
     } catch {}
+    setMounted(true);
   }, []);
 
   function isOwned(heroId: string): boolean {
@@ -66,5 +68,5 @@ export function useOwnedHeroes() {
     });
   }
 
-  return { isOwned, addOwned, removeOwned };
+  return { isOwned, addOwned, removeOwned, mounted };
 }

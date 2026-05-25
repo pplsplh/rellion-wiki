@@ -9,21 +9,25 @@ const FEATURES = [
     icon: Map,
     title: "Interactive Roadmap",
     desc: "From wanderer to champion — a path laid in ancient ink.",
+    href: "#roadmap",
   },
   {
     icon: Users,
     title: "Hero Compendium",
     desc: "Every soul has a story. Study them before battle.",
+    href: "/roster",
   },
   {
     icon: Swords,
     title: "Formation Guide",
     desc: "The difference between victory and ruin is one deployment order.",
+    href: "/builder",
   },
   {
     icon: BookOpen,
     title: "Synergy Atlas",
     desc: "Even without gold, the clever adventurer prospers.",
+    href: "/builder",
   },
 ];
 
@@ -51,24 +55,28 @@ export default function Home() {
             </p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {FEATURES.map(({ icon: Icon, title, desc }, i) => (
-              <div
+            {FEATURES.map(({ icon: Icon, title, desc, href }, i) => (
+              <Link
                 key={title}
-                className="relative p-6 rounded-xl border border-parchment-dark hover:border-gold/50 transition-all duration-300 hover:shadow-lg overflow-hidden"
+                href={href}
+                className="group relative p-6 rounded-xl border border-parchment-dark hover:border-gold/50 transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 overflow-hidden block"
               >
                 <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-gold/35 to-transparent" />
                 <div className="flex items-start justify-between mb-4">
-                  <div className="w-12 h-12 rounded-lg bg-sage/20 flex items-center justify-center border border-sage/15">
+                  <div className="w-12 h-12 rounded-lg bg-sage/20 flex items-center justify-center border border-sage/15 group-hover:bg-sage/30 transition-colors">
                     <Icon className="w-6 h-6 text-sage" />
                   </div>
                   <span className="font-serif text-xs text-stone/45 tracking-widest pt-1">
                     {["I", "II", "III", "IV"][i]}
                   </span>
                 </div>
-                <h3 className="font-serif text-lg text-ink mb-1">{title}</h3>
+                <h3 className="font-serif text-lg text-ink mb-1 group-hover:text-ink-soft transition-colors">{title}</h3>
                 <div className="h-px bg-gradient-to-r from-gold/25 to-transparent mb-2" />
-                <p className="text-sm text-ink-muted italic font-[var(--font-fell)] leading-relaxed">{desc}</p>
-              </div>
+                <p className="text-sm text-ink-muted italic font-[var(--font-fell)] leading-relaxed mb-3">{desc}</p>
+                <span className="text-[10px] font-serif text-gold/50 group-hover:text-gold/80 transition-colors tracking-widest uppercase flex items-center gap-1">
+                  Enter <ChevronRight className="w-3 h-3" />
+                </span>
+              </Link>
             ))}
           </div>
         </div>

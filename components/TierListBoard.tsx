@@ -104,9 +104,27 @@ export function TierListBoard() {
   }
 
   return (
-    <div className="space-y-3">
+    <div className="bg-parchment border border-parchment-dark rounded-xl p-4">
 
-      {/* Tier rows */}
+      {/* Header */}
+      <div className="flex items-center justify-between mb-3 pb-2 border-b border-parchment-dark">
+        <div>
+          <h2 className="font-serif text-lg text-ink">Tier List</h2>
+          <p className="text-xs text-ink-muted">Drag atau tap hero untuk pindah tier</p>
+        </div>
+        <button
+          onClick={() => {
+            setAssignments({ ...DEFAULT_ASSIGNMENTS });
+            saveAssignments(DEFAULT_ASSIGNMENTS);
+          }}
+          className="text-xs font-serif text-ink-muted hover:text-rose transition-colors border border-parchment-dark rounded px-2 py-1"
+        >
+          Reset
+        </button>
+      </div>
+
+      {/* Tier columns — S | A | B | C side by side */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
       {TIERS.map((tier) => {
         const tierHeroes = heroes.filter((h) => assignments[h.id] === tier);
         const meta = TIER_META[tier];
@@ -119,7 +137,7 @@ export function TierListBoard() {
             onDrop={(e) => handleDrop(tier, e)}
             onDragLeave={() => setDragOverTier(null)}
             className={`
-              flex gap-3 p-3 rounded-xl border transition-all min-h-[72px] items-center
+              flex flex-col rounded-xl border transition-all min-h-[160px] p-3
               ${isOver
                 ? `${meta.border} ${meta.bg} ring-1 ring-offset-0 ${meta.border.replace("border-", "ring-")}`
                 : "border-parchment-dark bg-parchment"}
@@ -128,8 +146,7 @@ export function TierListBoard() {
             {/* Tier label */}
             <div
               className={`
-                flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center
-                font-serif font-bold text-lg border
+                w-full flex items-center justify-center mb-3 py-1.5 rounded-lg font-serif font-bold text-lg border
                 ${meta.color} ${meta.bg} ${meta.border}
               `}
               onClick={() => selectedId && assign(selectedId, tier)}
@@ -140,10 +157,10 @@ export function TierListBoard() {
             </div>
 
             {/* Heroes in this tier */}
-            <div className="flex flex-wrap gap-2 flex-1">
+            <div className="flex flex-wrap gap-2 justify-center flex-1">
               {tierHeroes.length === 0 && (
-                <p className="text-xs text-stone italic font-[var(--font-fell)] self-center">
-                  {isOver ? "Lepas di sini" : "Belum ada hero"}
+                <p className="text-xs text-stone italic font-[var(--font-fell)] self-center text-center">
+                  {isOver ? "Lepas di sini" : "—"}
                 </p>
               )}
               {tierHeroes.map((hero) => {
@@ -176,6 +193,7 @@ export function TierListBoard() {
           </div>
         );
       })}
+      </div>{/* end grid */}
 
       {/* Tap-to-assign panel — muncul saat hero dipilih */}
       {selectedId && (() => {
@@ -213,6 +231,7 @@ export function TierListBoard() {
           </div>
         );
       })()}
+
     </div>
   );
 }

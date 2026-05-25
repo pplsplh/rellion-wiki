@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default function BuilderPage() {
   return (
     <main className="min-h-screen bg-parchment-dark">
-      <div className="max-w-5xl mx-auto px-4 py-8">
+      <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="text-center mb-6">
           <div className="inline-flex items-center gap-2 mb-3">
             <Swords className="w-5 h-5 text-sage" />

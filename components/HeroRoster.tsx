@@ -15,7 +15,7 @@ export function HeroRoster() {
   const [filter, setFilter]   = useState<Filter>("All");
   const [search, setSearch]   = useState("");
   const [justAdded, setJustAdded] = useState<string | null>(null);
-  const { isOwned, addOwned, removeOwned } = useOwnedHeroes();
+  const { isOwned, addOwned, removeOwned, mounted } = useOwnedHeroes();
 
   function handleAdd(heroId: string) {
     addOwned(heroId);
@@ -80,7 +80,13 @@ export function HeroRoster() {
 
       {/* Hero grid */}
       <div>
-        {(() => {
+        {!mounted ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="h-48 rounded-xl border border-parchment-dark bg-parchment animate-pulse" />
+            ))}
+          </div>
+        ) : (() => {
           const ownedList  = filtered.filter((h) => isOwned(h.id));
           const gachaList  = filtered.filter((h) => !isOwned(h.id));
           const showBoth   = ownedList.length > 0 && gachaList.length > 0;
