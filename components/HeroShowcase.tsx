@@ -70,7 +70,7 @@ export function HeroShowcase() {
   const ringColor = TYPE_BORDER[hero.type] ?? "border-stone/60";
 
   return (
-    <section className="relative min-h-screen overflow-hidden bg-ink">
+    <section className="relative overflow-hidden bg-ink md:min-h-screen">
 
       {/* ── Rune particles ── */}
       <div aria-hidden className="absolute inset-0 z-[2] pointer-events-none">
@@ -83,48 +83,46 @@ export function HeroShowcase() {
         ))}
       </div>
 
-      {/* ── Character art (fades on hero change) ── */}
+      {/* ── Mobile: character image in flow (top) ── */}
       <div
-        className="absolute inset-0 z-[1] transition-opacity duration-300"
+        className="md:hidden relative h-[58vh] transition-opacity duration-300"
         style={{ opacity: visible ? 1 : 0 }}
       >
-        {/* Mobile: full-bleed bg */}
-        <div className="md:hidden absolute inset-0">
-          <Image
-            src={`/images/${hero.id}.jpg`}
-            alt={hero.name}
-            fill
-            className="object-cover object-[28%_top]"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-ink/95 via-ink/80 to-ink/30" />
-          <div className="absolute bottom-0 inset-x-0 h-32 bg-gradient-to-t from-parchment via-parchment/50 to-transparent" />
-        </div>
+        <Image
+          src={`/images/${hero.id}.jpg`}
+          alt={hero.name}
+          fill
+          className="object-cover object-top"
+          priority
+        />
+        {/* subtle bottom fade ke section teks */}
+        <div className="absolute bottom-0 inset-x-0 h-20 bg-gradient-to-t from-ink to-transparent" />
+      </div>
 
-        {/* Desktop: right 60% only */}
-        <div className="hidden md:block absolute right-0 top-0 bottom-0 w-3/5">
-          <Image
-            src={`/images/${hero.id}.jpg`}
-            alt={hero.name}
-            fill
-            className="object-cover object-left-top"
-            priority
-          />
-          {/* left fade — covers left nav panel */}
-          <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/20 to-transparent" />
-          {/* right fade — covers stats panel */}
-          <div className="absolute inset-0 bg-gradient-to-l from-ink/70 via-ink/10 to-transparent" />
-          {/* bottom fade — covers stars overlay, kept short so feet visible */}
-          <div className="absolute bottom-0 inset-x-0 h-32 bg-gradient-to-t from-parchment via-parchment/40 to-transparent" />
-        </div>
+      {/* ── Desktop: character image absolute (right side) ── */}
+      <div
+        className="hidden md:block absolute right-0 top-0 bottom-0 w-3/5 transition-opacity duration-300"
+        style={{ opacity: visible ? 1 : 0 }}
+      >
+        <Image
+          src={`/images/${hero.id}.jpg`}
+          alt={hero.name}
+          fill
+          className="object-cover object-left-top"
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/20 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-l from-ink/70 via-ink/10 to-transparent" />
+        <div className="absolute bottom-0 inset-x-0 h-32 bg-gradient-to-t from-parchment via-parchment/40 to-transparent" />
       </div>
 
       {/* ── Content ── */}
-      <div className="relative z-10 min-h-screen flex items-center">
-        <div className="w-full md:w-2/5 px-8 md:px-12 lg:px-16 py-24">
+      {/* mobile: flows below image | desktop: absolute overlay kiri */}
+      <div className="relative z-10 bg-ink md:bg-transparent md:absolute md:inset-0 md:flex md:items-center">
+        <div className="w-full md:w-2/5 px-6 pt-5 pb-10 md:px-12 lg:px-16 md:py-24">
 
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-parchment/10 border border-gold/30 mb-10">
+          {/* Badge — desktop only (terlalu ramai di mobile) */}
+          <div className="hidden md:inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-parchment/10 border border-gold/30 mb-10">
             <Star className="w-3 h-3 text-gold" />
             <span className="text-[10px] font-serif text-parchment/70 tracking-[0.25em] uppercase">
               Rellion · Adventurer's Codex
@@ -143,7 +141,7 @@ export function HeroShowcase() {
               </p>
             </div>
 
-            <h2 className="font-[var(--font-cinzel-decorative)] text-5xl md:text-6xl lg:text-7xl text-parchment mb-2 leading-none tracking-wide">
+            <h2 className="font-[var(--font-cinzel-decorative)] text-4xl md:text-6xl lg:text-7xl text-parchment mb-2 leading-none tracking-wide">
               {hero.name}
             </h2>
 
@@ -153,11 +151,11 @@ export function HeroShowcase() {
               <div className="h-px flex-1 bg-parchment/15" />
             </div>
 
-            <p className="text-base text-parchment/45 italic font-[var(--font-fell)] mb-4">
+            <p className="text-sm text-parchment/45 italic font-[var(--font-fell)] mb-4">
               {hero.title}
             </p>
 
-            <div className="flex flex-wrap items-center gap-2 mb-5">
+            <div className="flex flex-wrap items-center gap-2 mb-4">
               <div className={`inline-flex items-center px-3 py-1 rounded-full border ${ringColor} bg-parchment/5`}>
                 <span className="text-xs font-serif text-parchment/65 tracking-wider">{hero.role}</span>
               </div>
@@ -169,13 +167,13 @@ export function HeroShowcase() {
               )}
             </div>
 
-            <p className="text-sm text-parchment/40 font-[var(--font-fell)] italic leading-relaxed max-w-xs">
+            <p className="text-sm text-parchment/40 font-[var(--font-fell)] italic leading-relaxed md:max-w-xs">
               {hero.notes}
             </p>
           </div>
 
           {/* Navigation */}
-          <div className="flex items-center gap-4 mt-10 mb-8">
+          <div className="flex items-center gap-4 mt-6 mb-6">
             <button
               onClick={() => navigate((idx - 1 + SHOWCASE.length) % SHOWCASE.length)}
               className="text-parchment/35 hover:text-parchment/70 transition-colors"
@@ -226,8 +224,8 @@ export function HeroShowcase() {
         </div>
       </div>
 
-      {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 animate-bounce">
+      {/* Scroll indicator — desktop only */}
+      <div className="hidden md:flex absolute bottom-8 left-1/2 -translate-x-1/2 z-10 animate-bounce">
         <div className="w-6 h-10 rounded-full border-2 border-parchment/25 flex items-start justify-center p-2">
           <div className="w-1.5 h-3 bg-gold/60 rounded-full" />
         </div>
